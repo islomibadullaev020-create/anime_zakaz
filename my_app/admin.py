@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import (
     Category, CustomUser, VipUser, Movie, MovieEpisode, 
-    SiteSettings, MP3, ChatMessage, ProfileAvatar, SubscriptionReceipt
+    SiteSettings, MP3, ChatMessage, ProfileAvatar, SubscriptionReceipt,AnimeSectionItem
 )
 
 
@@ -63,6 +63,14 @@ class ChatMessageAdmin(admin.ModelAdmin):
     def message_preview(self, obj):
         return obj.message[:50] + '...' if len(obj.message) > 50 else obj.message
     message_preview.short_description = 'Message'
+
+@admin.register(AnimeSectionItem)
+class AnimeSectionItemAdmin(admin.ModelAdmin):
+    list_display = ('movie', 'section', 'order', 'created_at')
+    list_filter = ('section',)
+    search_fields = ('movie__title',)
+    autocomplete_fields = ('movie',)
+    ordering = ('section', 'order')
 
 
 admin.site.register(CustomUser, CustomUserAdmin)
